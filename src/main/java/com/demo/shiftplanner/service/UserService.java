@@ -8,12 +8,29 @@ import com.demo.shiftplanner.model.User;
 public class UserService {
     private final UserDAO userDAO = new UserDAO();
 
+
+    public User login(String username, String password) {
+        if(username == null || username.trim().isEmpty()) {
+            throw new BusinessException("Invalid username.");
+        }
+        if(password == null || password.trim().isEmpty()) {
+            throw new BusinessException("Invalid password");
+        }
+        User user = userDAO.findByUsername(username);
+        if(user == null) {
+            throw new BusinessException("Invalid username/password");
+        }
+        return user;
+    }
     public User createEmployee(String username, String password) {
         if(username == null || username.trim().isEmpty()) {
             throw new BusinessException("Invalid Username!");
         }
         if(password == null || password.trim().isEmpty()) {
             throw new BusinessException("Invalid password!");
+        }
+        if(userDAO.findByUsername(username) !=null) {
+            throw new BusinessException("User already exists in database.");
         }
 
         User user = new User(null, username, password, Role.EMPLOYEE);

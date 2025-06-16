@@ -37,4 +37,30 @@ public class UserDAO {
             throw new DataAccessException("Error saving user to database");
         }
     }
+
+    /**
+     * Check for user by username
+     *
+     * @return User if exists, otherwise return null
+     */
+    public User findByUsername(String username) {
+        String sql = "SELECT * FROM users WHERE username=?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Long id = rs.getLong("id");
+                    String name = rs.getString("username");
+                    String pass = rs.getString("password");
+                    Role role = Role.valueOf(rs.getString("role"));
+                    return new User(id, name, pass, role);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("Error finding username");
+        }
+        return null;
+    }
 }

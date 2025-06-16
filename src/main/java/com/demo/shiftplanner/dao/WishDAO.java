@@ -30,4 +30,6 @@ public class WishDAO {
             throw new DataAccessException("Error inserting in wishes table");
         }
     }
+
+
 }
