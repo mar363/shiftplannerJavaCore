@@ -6,12 +6,12 @@ public class Wish {
     private Long id;
     private Long employeeId;
     private LocalDate date;
-    private String shiftType;
+    private ShiftType shiftType;
 
     public Wish() {
     }
 
-    public Wish(Long id, Long employeeId, LocalDate date, String shiftType) {
+    public Wish(Long id, Long employeeId, LocalDate date, ShiftType shiftType) {
         this.id = id;
         this.employeeId = employeeId;
         this.date = date;
@@ -42,11 +42,11 @@ public class Wish {
         this.date = date;
     }
 
-    public String getShiftType() {
+    public ShiftType getShiftType() {
         return shiftType;
     }
 
-    public void setShiftType(String shiftType) {
+    public void setShiftType(ShiftType shiftType) {
         this.shiftType = shiftType;
     }
 
