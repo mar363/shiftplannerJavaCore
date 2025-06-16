@@ -11,6 +11,13 @@ public class Wish {
     public Wish() {
     }
 
+    public Wish(Long id, Long employeeId, LocalDate date, ShiftType shiftType) {
+        this.id = id;
+        this.employeeId = employeeId;
+        this.date = date;
+        this.shiftType = shiftType;
+    }
+
     public Wish(Long employeeId, LocalDate date, ShiftType shiftType) {
         this.employeeId = employeeId;
         this.date = date;
