@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AssignmentDAO {
-    private AssignmentDAO assignmentDAO = new AssignmentDAO();
 
     public Assignment save(Assignment a) {
         String sql = "INSERT INTO assignments (employee_id, date, shift_type) VALUES (?,?,?)";

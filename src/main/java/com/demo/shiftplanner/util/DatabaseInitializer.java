@@ -10,11 +10,11 @@ public class DatabaseInitializer {
              Statement stmt = conn.createStatement()) {
             stmt.execute(
                     "CREATE TABLE IF NOT EXISTS users (" +
-                    "id IDENTITY PRIMARY KEY," +
-                    "username VARCHAR(200) UNIQUE NOT NULL," +
-                    "password VARCHAR(200) NOT NULL," +
-                    "role VARCHAR(20) NOT NULL" +
-                    ")"
+                            "id IDENTITY PRIMARY KEY," +
+                            "username VARCHAR(200) UNIQUE NOT NULL," +
+                            "password VARCHAR(200) NOT NULL," +
+                            "role VARCHAR(20) NOT NULL" +
+                            ")"
             );
 
             stmt.execute(
@@ -36,10 +36,13 @@ public class DatabaseInitializer {
                             "shift_type VARCHAR(200) NOT NULL," +
                             "CONSTRAINT fk_assign_user FOREIGN KEY(employee_id) REFERENCES users(id) ON DELETE CASCADE," +
                             "CONSTRAINT uc_assign_employee_date UNIQUE(employee_id, date)," +
-                            "CONSTRAINT uc_assign_dat_shift UNIQUE(date, shift_type)"+
+                            "CONSTRAINT uc_assign_dat_shift UNIQUE(date, shift_type)" +
                             ")"
             );
-
+            String sql = "INSERT INTO users(username, password, role) " +
+                    "SELECT 'admin', 'admin123', 'ADMIN' " +
+                    "WHERE NOT EXISTS (SELECT 1 FROM users WHERE username = 'admin')";
+            stmt.executeUpdate(sql);
         } catch (SQLException e) {
             e.printStackTrace();
             System.exit(1);

@@ -1,0 +1,9 @@
+2025-06-17 13:18:56 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO users(username, password, role) SELECT 'admin', 'admin123', 'ADMIN' [*])"; SQL statement:
+INSERT INTO users(username, password, role) SELECT 'admin', 'admin123', 'ADMIN' ) [42000-214]
+2025-06-17 13:20:23 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO users(username, password, role) SELECT 'admin', 'admin123', 'ADMIN' [*]) + WHERE NOT EXISTS (SELECT 1 FROM users WHERE username='admin'"; SQL statement:
+INSERT INTO users(username, password, role) SELECT 'admin', 'admin123', 'ADMIN' ) + WHERE NOT EXISTS (SELECT 1 FROM users WHERE username='admin' [42000-214]
+2025-06-17 13:21:20 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "INSERT INTO users(username, password, role) SELECT 'admin', 'admin123', 'ADMIN' WHERE NOT EXISTS (SELECT 1 FROM users WHERE username='admin'[*]"; expected "[, ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, _LOCAL_AND_GLOBAL_, OR, GROUP BY, HAVING, WINDOW, QUALIFY, INTERSECT, UNION, EXCEPT, MINUS, ORDER BY, OFFSET, FETCH, LIMIT, FOR, )"; SQL statement:
+INSERT INTO users(username, password, role) SELECT 'admin', 'admin123', 'ADMIN' WHERE NOT EXISTS (SELECT 1 FROM users WHERE username='admin' [42001-214]
