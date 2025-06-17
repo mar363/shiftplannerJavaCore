@@ -18,6 +18,13 @@ public class Assignment {
         this.shiftType = shiftType;
     }
 
+    public Assignment(Long id, LocalDate date, ShiftType shiftType) {
+        this.id = id;
+        this.date = date;
+        this.shiftType = shiftType;
+    }
+
+
     public Long getId() {
         return id;
     }

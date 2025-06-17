@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class AssignmentDAO {
     private AssignmentDAO assignmentDAO = new AssignmentDAO();
 
-    private Assignment save(Assignment a) {
+    public Assignment save(Assignment a) {
         String sql = "INSERT INTO assignments (employee_id, date, shift_type) VALUES (?,?,?)";
         try(Connection conn = DBUtil.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
