@@ -36,15 +36,11 @@ public class UserDAO {
             }
             return user;
         } catch (SQLException e) {
-            throw new DataAccessException("Error saving user to database");
+            throw new DataAccessException("Error saving user to database", e);
         }
     }
 
-    /**
-     * Check for user by username
-     *
-     * @return User if exists, otherwise return null
-     */
+
     public User findByUsername(String username) {
         String sql = "SELECT * FROM users WHERE username=?";
         try (Connection conn = DBUtil.getConnection();
@@ -61,7 +57,7 @@ public class UserDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new DataAccessException("Error finding username");
+            throw new DataAccessException("Error finding username", e);
         }
         return null;
     }
@@ -72,17 +68,19 @@ public List<User> getAllEmployees() {
         try(Connection conn = DBUtil.getConnection();
         PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1,Role.EMPLOYEE.name());
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                Long id = rs.getLong("id");
-                String name = rs.getString("username");
-                String pass = rs.getString("password");
-                Role role = Role.valueOf(rs.getString("role"));
-                users.add(new User(id, name, pass, role));
-            }
+           try(ResultSet rs = stmt.executeQuery()) {
+               while (rs.next()) {
+                   Long id = rs.getLong("id");
+                   String name = rs.getString("username");
+                   String pass = rs.getString("password");
+                   Role role = Role.valueOf(rs.getString("role"));
+                   users.add(new User(id, name, pass, role));
+               }
+           }
+
         } catch (SQLException e) {
-            throw new DataAccessException("Error when try to get all employee");
+            throw new DataAccessException("Error when try to get all employee", e);
         }
-        return  users;
+    return  users;
 }
 }

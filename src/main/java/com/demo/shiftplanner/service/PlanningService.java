@@ -7,8 +7,8 @@ import com.demo.shiftplanner.model.Role;
 import com.demo.shiftplanner.model.ShiftType;
 import com.demo.shiftplanner.model.User;
 
+
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -78,6 +78,7 @@ public class PlanningService {
         } else {
             chosenLate = availableForLate.get(0);
         }
+
         assignmentDAO.deleteByDate(date);
         Assignment a1 = new Assignment(null,chosenEarly, date, ShiftType.EARLY);
         assignmentDAO.save(a1);

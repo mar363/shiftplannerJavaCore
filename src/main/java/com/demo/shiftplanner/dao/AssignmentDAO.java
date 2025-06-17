@@ -9,7 +9,6 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class AssignmentDAO {
 
@@ -30,6 +29,7 @@ public class AssignmentDAO {
                     a.setId(rs.getLong(1));
                 }
             }
+
         } catch (SQLException e) {
             throw new DataAccessException("Error when saving Assignments");
         }
@@ -41,13 +41,13 @@ public class AssignmentDAO {
         List<Assignment> assignments = new ArrayList<>();
         try(Connection conn = DBUtil.getConnection();
         PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setDate(1,Date.valueOf("date"));
+            System.out.println("Debug: AssignmentDAO.findByDate with LocalDate=" + date);
+            stmt.setDate(1, java.sql.Date.valueOf(date));  // folosește valoare LocalDate
 
             try(ResultSet rs = stmt.executeQuery()) {
-                if(rs.next()) {
+                while(rs.next()) {
                     Long id = rs.getLong("id");
                     Long empId = rs.getLong("employee_id");
-                    String username = rs.getString("username");
                     ShiftType shiftType = ShiftType.valueOf(rs.getString("shift_type"));
                     assignments.add(new Assignment(id, empId, date, shiftType));
                 }

@@ -1,7 +1,6 @@
 package com.demo.shiftplanner.controller;
 
 import com.demo.shiftplanner.exceptions.BusinessException;
-import com.demo.shiftplanner.exceptions.DataAccessException;
 import com.demo.shiftplanner.model.Assignment;
 import com.demo.shiftplanner.model.Role;
 import com.demo.shiftplanner.model.ShiftType;
@@ -60,7 +59,7 @@ public class AppMenu {
         String password = scanner.nextLine().trim();
         try {
             User user = userService.login(username, password);
-            System.out.println("Welcome, " + user.getUsername());
+            System.out.println("Welcome, " + user.getUsername() + "!");
 
             if (user.getRole() == Role.ADMIN) {
                 adminMenu(user);
@@ -160,25 +159,31 @@ public class AppMenu {
         System.out.println("Planification result for " + date + ":");
 
         for (Assignment a : res) {
-            System.out.println("Employee ID " + a.getEmployeeId() + " shift: " + a.getShiftType());
+            System.out.println("Employee ID " + a.getEmployeeId() + " " + "shift: " + a.getShiftType());
         }
     }
 
     private void viewScheduleDay() {
         System.out.print("Date (YYYY-MM-DD): ");
-        LocalDate date = LocalDate.parse(scanner.nextLine().trim());
+        String dateLine = scanner.nextLine().trim();
+        LocalDate date;
+        try {
+            date = LocalDate.parse(dateLine);
+        } catch (DateTimeParseException dte) {
+            System.out.println("Invalid format date. Use: YYYY-MM-DD");
+            return;
+        }
         try {
             List<Assignment> listAssignments = scheduleService.getScheduleForDate(date);
+            System.out.println("Debug: listAssignments size=" + listAssignments.size() + ", contents=" + listAssignments);
             if (listAssignments.isEmpty()) {
                 System.out.println("There are not assignemnts for: " + date);
             } else {
                 System.out.println("Schedule for " + date + ":");
                 for (Assignment a : listAssignments) {
-                    System.out.println("Employee ID: " + a.getEmployeeId() + "shift: " + a.getShiftType());
+                    System.out.println("Employee ID: " + a.getEmployeeId() + " " + "shift: " + a.getShiftType());
                 }
             }
-        } catch (DateTimeParseException dte) {
-            System.out.println("Invalid format date. Use YYYY-MM-DD");
         } catch (BusinessException e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -195,11 +200,11 @@ public class AppMenu {
             System.out.println("Shift EARLY/LATE: ");
             ShiftType shiftType = ShiftType.valueOf(scanner.nextLine().trim().toUpperCase());
             wishService.addWish(user.getId(), date, shiftType);
-            System.out.println("Your wish shift: " + shiftType  + " was added for " + date);
+            System.out.println("Your wish shift: " + shiftType + " was added for " + date);
         } catch (DateTimeParseException dte) {
-            System.out.println("Invalid format date. Use: YYYY-MM-DD");
+            System.out.println("Invalid format date. Use: YYYY-MM-DD" + dte);
         } catch (IllegalArgumentException iae) {
-            System.out.println("Invalid Shift. Chose between EARLY and LATE.");
+            System.out.println("Invalid Shift. Chose between EARLY and LATE." +  iae);
         } catch (BusinessException e) {
             System.out.println("Error: " + e.getMessage());
         }
