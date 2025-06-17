@@ -65,5 +65,24 @@ public class UserDAO {
         }
         return null;
     }
+public List<User> getAllEmployees() {
+        String sql = "SELECT * FROM users WHERE role=?";
+        List<User> users = new ArrayList<>();
 
+        try(Connection conn = DBUtil.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1,Role.EMPLOYEE.name());
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Long id = rs.getLong("id");
+                String name = rs.getString("username");
+                String pass = rs.getString("password");
+                Role role = Role.valueOf(rs.getString("role"));
+                users.add(new User(id, name, pass, role));
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("Error when try to get all employee");
+        }
+        return  users;
+}
 }
