@@ -4,11 +4,14 @@ import com.demo.shiftplanner.exceptions.BusinessException;
 import com.demo.shiftplanner.exceptions.DataAccessException;
 import com.demo.shiftplanner.model.ShiftType;
 import com.demo.shiftplanner.model.Wish;
+import com.demo.shiftplanner.service.WishService;
 import com.demo.shiftplanner.util.DBUtil;
 import com.demo.shiftplanner.util.DatabaseInitializer;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WishDAO {
     public Wish save(Wish wish) {
@@ -51,5 +54,30 @@ public class WishDAO {
             throw new DataAccessException("Error when trying to find employee by id and date");
         }
         return null;
+    }
+
+    public List<Wish> findByDateAndShift(LocalDate date, ShiftType shiftType) {
+        String sql = "SELECT * FROM wishes WHERE date=? AND shift_type=?";
+        List<Wish> wishes = new ArrayList<>();
+
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setDate(1, Date.valueOf(date));
+            stmt.setString(2, shiftType.name());
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Long id = rs.getLong("id");
+                    Long empId = rs.getLong("employee_id");
+                    LocalDate ld = rs.getDate("date").toLocalDate();
+                    ShiftType sf = ShiftType.valueOf(rs.getString("shift_type"));
+
+                    wishes.add(new Wish(id, empId, ld, sf));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("Error when trying to find preferences by date dan shift");
+        }
+        return wishes;
     }
 }

@@ -6,6 +6,8 @@ import com.demo.shiftplanner.model.User;
 import com.demo.shiftplanner.util.DBUtil;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDAO {
     /* save
@@ -63,4 +65,5 @@ public class UserDAO {
         }
         return null;
     }
+
 }

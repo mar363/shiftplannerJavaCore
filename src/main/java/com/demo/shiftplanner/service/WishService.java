@@ -7,6 +7,7 @@ import com.demo.shiftplanner.model.ShiftType;
 import com.demo.shiftplanner.model.Wish;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class WishService {
     private WishDAO wishDAO = new WishDAO();
@@ -35,7 +36,12 @@ public class WishService {
         } catch (DataAccessException e) {
             throw new BusinessException("Error on saving your shift-date preference");
         }
-
     }
 
+    public List<Wish> getWishesByDateAndShift(LocalDate date, ShiftType shiftType) {
+        if (date == null || shiftType == null){
+            throw new BusinessException("Error access data, date and shift cannot be null");
+        }
+        return wishDAO.findByDateAndShift(date, shiftType);
+    }
 }

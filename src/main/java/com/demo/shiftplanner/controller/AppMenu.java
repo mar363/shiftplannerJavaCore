@@ -30,19 +30,14 @@ public class AppMenu {
 
         while (true) {
             System.out.println("\n===PLANNING SCHEDULE MENU===");
-            System.out.println("1. Add new user");
-            System.out.println("2. Add your preference (in wishbook)");
-            System.out.println("3, Find user by username  ");
-            System.out.println("0. Exit");
-            System.out.println("Chose your option: ");
-            int opt = scanner.nextInt();
-            scanner.nextLine();
+            System.out.println("1. Login");
+            System.out.println("2. Exit");
+            System.out.print("Chose your option: ");
+            String opt = scanner.nextLine().trim();
 
-            if (opt == 1) {
-                addUser(scanner);
-            } else if (opt == 2) {
-                //       addWish();
-            } else if (opt == 0) {
+            if (opt.equals("1")) {
+               handleLogin();
+            } else if(opt.equals("2")) {
                 System.out.println("Exiting...");
                 break;
             } else {
@@ -52,7 +47,24 @@ public class AppMenu {
         scanner.close();
 
     }
+private void handleLogin(){
+        System.out.print("Username: ");
+        String username = scanner.nextLine().trim();
+        System.out.print("Password: ");
+        String password = scanner.nextLine().trim();
+        try {
+            User user = userService.login(username, password);
+            System.out.println("Welcome, " + user.getUsername());
 
+            if(user.getRole() == Role.ADMIN) {
+
+            } else {
+
+            }
+        } catch (BusinessException e) {
+            System.out.println("Access denied: " + e.getMessage());
+        }
+}
     private void addUser(Scanner scanner) {
         System.out.println("Username: ");
         String username = scanner.nextLine();

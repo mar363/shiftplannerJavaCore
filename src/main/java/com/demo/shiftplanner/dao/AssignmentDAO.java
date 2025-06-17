@@ -1,6 +1,5 @@
 package com.demo.shiftplanner.dao;
 
-import com.demo.shiftplanner.exceptions.BusinessException;
 import com.demo.shiftplanner.exceptions.DataAccessException;
 import com.demo.shiftplanner.model.Assignment;
 import com.demo.shiftplanner.model.ShiftType;
