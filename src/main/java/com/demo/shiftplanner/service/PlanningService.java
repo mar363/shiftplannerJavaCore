@@ -78,7 +78,7 @@ public class PlanningService {
         } else {
             chosenLate = availableForLate.get(0);
         }
-
+        assignmentDAO.deleteByDate(date);
         Assignment a1 = new Assignment(chosenEarly, date, ShiftType.EARLY);
         assignmentDAO.save(a1);
         Assignment a2 = new Assignment(chosenLate, date, ShiftType.LATE);

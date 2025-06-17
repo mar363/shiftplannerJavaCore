@@ -59,4 +59,16 @@ public class AssignmentDAO {
         }
         return assignments;
     }
+
+    public boolean deleteByDate(LocalDate date) {
+        String sql = "DELETE FROM assignments WHERE date=?";
+        try(Connection conn = DBUtil.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setDate(1, Date.valueOf(date));
+            int affectedRows = stmt.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            throw new DataAccessException("Error trying to delete assignments by date");
+        }
+    }
 }

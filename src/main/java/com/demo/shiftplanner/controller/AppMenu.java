@@ -8,7 +8,6 @@ import com.demo.shiftplanner.service.UserService;
 import com.demo.shiftplanner.service.WishService;
 import com.demo.shiftplanner.util.DatabaseInitializer;
 
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -65,6 +64,8 @@ private void handleLogin(){
             System.out.println("Access denied: " + e.getMessage());
         }
 }
+
+
     private void addUser(Scanner scanner) {
         System.out.println("Username: ");
         String username = scanner.nextLine();
@@ -84,8 +85,8 @@ private void handleLogin(){
         String dateLine = scanner.nextLine().trim();
 
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            LocalDate date = LocalDate.parse(dateLine, formatter);
+            //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            LocalDate date = LocalDate.parse(dateLine);
             System.out.println("Shift EARLY/LATE: ");
             ShiftType shiftType = ShiftType.valueOf(scanner.nextLine().trim().toUpperCase());
             wishService.addWish(user.getId(), date, shiftType);
