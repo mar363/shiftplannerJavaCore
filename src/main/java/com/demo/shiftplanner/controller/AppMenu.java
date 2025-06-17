@@ -65,7 +65,7 @@ public class AppMenu {
             if (user.getRole() == Role.ADMIN) {
                 adminMenu(user);
             } else {
-
+                employeeMenu(user);
             }
         } catch (BusinessException e) {
             System.out.println("Access denied: " + e.getMessage());
@@ -78,7 +78,7 @@ public class AppMenu {
             System.out.println("1) Create new employee ");
             System.out.println("2) Planing schedule for day");
             System.out.println("3) View schedule for a day");
-            System.out.println("4) Logoout");
+            System.out.println("4) Logout");
             System.out.print("Chose your option: ");
 
             String opt = scanner.nextLine().trim();
@@ -107,6 +107,38 @@ public class AppMenu {
         }
     }
 
+    private void employeeMenu(User user) {
+        while (true) {
+            System.out.println("\n===EMPLOYEE Menu===");
+            System.out.println("1) Add a schedule preference (wishbook) ");
+            System.out.println("2) View schedule for a day");
+            System.out.println("3) Logout");
+            System.out.print("Chose your option: ");
+            String opt = scanner.nextLine().trim();
+
+
+            try {
+                switch (opt) {
+
+                    case "1":
+                        addWish(user);
+                        break;
+                    case "2":
+                        viewScheduleDay();
+                        break;
+                    case "3":
+                        System.out.println("Logout...");
+                        return;
+                    default:
+                        System.out.println("Invalid option");
+                        break;
+                }
+            } catch (BusinessException | DateTimeParseException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
+    }
+
     private void createEmployee() {
         System.out.print("Username: ");
         String username = scanner.nextLine();
@@ -114,7 +146,7 @@ public class AppMenu {
         String password = scanner.nextLine();
 
         try {
-            User user = userService.createEmployee(username, password);
+            userService.createEmployee(username, password);
             System.out.println("Employee added");
         } catch (BusinessException e) {
             System.out.println("Error " + e.getMessage());
@@ -152,8 +184,9 @@ public class AppMenu {
         }
     }
 
+
     private void addWish(User user) {
-        System.out.println("Date (DD-MM-YYYY)");
+        System.out.print("Date (YYYY-MM-DD): ");
         String dateLine = scanner.nextLine().trim();
 
         try {
@@ -162,8 +195,9 @@ public class AppMenu {
             System.out.println("Shift EARLY/LATE: ");
             ShiftType shiftType = ShiftType.valueOf(scanner.nextLine().trim().toUpperCase());
             wishService.addWish(user.getId(), date, shiftType);
+            System.out.println("Your wish shift: " + shiftType  + " was added for " + date);
         } catch (DateTimeParseException dte) {
-            System.out.println("Invalid format date. Use: dd-MM-yyyy");
+            System.out.println("Invalid format date. Use: YYYY-MM-DD");
         } catch (IllegalArgumentException iae) {
             System.out.println("Invalid Shift. Chose between EARLY and LATE.");
         } catch (BusinessException e) {

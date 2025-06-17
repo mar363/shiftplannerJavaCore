@@ -4,9 +4,8 @@ import com.demo.shiftplanner.exceptions.BusinessException;
 import com.demo.shiftplanner.exceptions.DataAccessException;
 import com.demo.shiftplanner.model.ShiftType;
 import com.demo.shiftplanner.model.Wish;
-import com.demo.shiftplanner.service.WishService;
 import com.demo.shiftplanner.util.DBUtil;
-import com.demo.shiftplanner.util.DatabaseInitializer;
+
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -15,7 +14,7 @@ import java.util.List;
 
 public class WishDAO {
     public Wish save(Wish wish) {
-        String sql = "INSERT INTO wishes VALUES(?,?,?)";
+        String sql = "INSERT INTO wishes(employee_id, date, shift_type) VALUES(?,?,?)";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setLong(1, wish.getEmployeeId());
@@ -32,6 +31,10 @@ public class WishDAO {
             }
             return wish;
         } catch (SQLException e) {
+//            System.err.println("SQLException in WishDAO.insert: SQLState=" + e.getSQLState() +
+//                    ", ErrorCode=" + e.getErrorCode() +
+//                    ", Message=" + e.getMessage());
+            e.printStackTrace();
             throw new DataAccessException("Error inserting in wishes table");
         }
     }

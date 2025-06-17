@@ -34,12 +34,12 @@ public class WishService {
         try {
             return wishDAO.save(wish);
         } catch (DataAccessException e) {
-            throw new BusinessException("Error on saving your shift-date preference");
+            throw new BusinessException("Error on saving your shift-date preference" + e);
         }
     }
 
     public List<Wish> getWishesByDateAndShift(LocalDate date, ShiftType shiftType) {
-        if (date == null || shiftType == null){
+        if (date == null || shiftType == null) {
             throw new BusinessException("Error access data, date and shift cannot be null");
         }
         return wishDAO.findByDateAndShift(date, shiftType);
